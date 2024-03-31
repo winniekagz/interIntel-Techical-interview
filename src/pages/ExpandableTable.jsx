@@ -1,42 +1,23 @@
 import React from "react";
 import { Table } from "antd";
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  
-  
-];
-const data = [
-  {
-    key: 1,
-    name: "John Brown", 
-    description:
-      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
-  },
-  {
-    key: 2,
-    name: "Jim Green", 
-    description:
-      "My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.",
-  },
-  {
-    key: 3,
-    name: "Not Expandable", 
-    description: "This not expandable",
-  },
-  {
-    key: 4,
-    name: "Joe Black", 
-    description:
-      "My name is Joe Black, I am 32 years old, living in Sydney No. 1 Lake Park.",
-  },
-];
  
 function ExpandableTable({ combinations }) {
     console.log("combinations",combinations);
+     const titles = Object.keys(combinations[0]);
+     const dataSource = combinations.map((item, index) => ({
+       key: index,
+       name: item[titles[0]],
+       description: Object.values(item),
+     }));
+
+     // Generate columns dynamically based on titles
+     const columns = titles.map((title, index) => ({
+       title: "title",
+       dataIndex: title,
+       key: index,
+       render: (text) => <p style={{ margin: 0 }}>{text}</p>,
+     }));
+
   return (
     <Table
       columns={columns}
@@ -52,7 +33,7 @@ function ExpandableTable({ combinations }) {
         ),
         rowExpandable: (record) => record.name !== "Not Expandable",
       }}
-      dataSource={data}
+      dataSource={dataSource}
     />
   );
 }
