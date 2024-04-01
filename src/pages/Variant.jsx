@@ -319,12 +319,12 @@ function Variant() {
           </div>
         </div>
       
-        <ExpandableTable combinations={combinations} />
-        {/* {optionList && optionList?.length > 0 ? (
+        {/* <ExpandableTable combinations={combinations} /> */}
+          {optionList && optionList?.length > 0 ? (
           <ExpandableTable combinations={combinations} />
         ) : (
           <div>Options you add will be displayed here</div>
-        )} */}
+        )}  
       </div>
     </div>
   );
