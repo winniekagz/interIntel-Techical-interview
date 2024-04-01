@@ -9,7 +9,7 @@ import { HashRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={store}> 
+  <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <HashRouter>
         <React.StrictMode>
@@ -40,7 +40,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             }}
           />
         </React.StrictMode>
-      </BrowserRouter>
+      </HashRouter>
     </PersistGate>
   </Provider>
 );
