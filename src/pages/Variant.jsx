@@ -130,8 +130,8 @@ generateCombinations(itemsArray, 0, "");
         <div className="w-3/4">
           {itemsArray?.length > 0 &&
             itemsArray?.map((item, index) => (
-              <div className="flex items-center " key={index + 1}>
-                <div className="justify start mr-10">1</div>
+              <div className="flex items-center card bg-white mt-10 p-10" key={index + 1}>
+                {/* <div className="justify start mr-10">1</div> */}
 
                 <div className="flex flex-col w-full">
                   <div className="flex justify-between items-center ">
@@ -151,7 +151,7 @@ generateCombinations(itemsArray, 0, "");
                       .map((key, childIndex) => (
                         <span
                           key={childIndex}
-                          className="rounded-[30px] h-[30px] w-[100px] flex items-center justify-center bg-[#808080]"
+                          className="rounded-[30px] h-[30px] w-[100px] flex items-center justify-center bg-gray"
                         >
                           {item[key]}
                         </span>
@@ -284,13 +284,9 @@ generateCombinations(itemsArray, 0, "");
             </Button>
           </div>
         </div>
-        {combinations?.length > 1 ? (
+       
           <ExpandableTable combinations={combinations} />
-        ) : (
-          <div className="">
-            <h1>No variants yet</h1>
-          </div>
-        )}
+       
       </div>
     </div>
   );

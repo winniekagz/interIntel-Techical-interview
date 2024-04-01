@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "antd";
+import HeaderText from "../components/typography/HeaderText";
 const columns = [
   {
     title: "Name",
@@ -67,11 +68,14 @@ function ExpandableTable({ combinations }) {
   
 
   return (
-    <Table
-      columns={columns}
-      expandable={{ expandedRowRender, rowExpandable }}
-      dataSource={expandedData}
-    />
+    <div className="w-3/4 mt-10"> 
+      <HeaderText text="Table Variants" />
+      <Table
+        columns={columns}
+        expandable={{ expandedRowRender, rowExpandable }}
+        dataSource={expandedData}
+      />
+    </div>
   );
 }
 
