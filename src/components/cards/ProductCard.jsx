@@ -9,7 +9,7 @@ export default function ProductCard({title,image,price,description,handleClick})
 
    
   return (
-    <div className='bg-white rounded-[8px] p-4 w-full '>
+    <div className='bg-light-blue-bg rounded-[8px] p-4 w-full h-[730px] '>
         <img src={image} alt="product"  className='mb-2 w-full '  />
         <div className="flex flex-col gap-4">
         <CardHeader text={title}/>

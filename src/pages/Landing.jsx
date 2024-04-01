@@ -24,19 +24,17 @@ function Landing() {
    }, []);
 
   return (
-    <div className="flex-col justify-center items-center h-[100vh] bg-light-blue-bg">
+    <div className="flex-col justify-center items-center h-[100vh] bg-white">
           <div className="flex justify-center m-8">
-      <HeaderText  text=" A list of all created products"/>
+      <HeaderText  text=" Click on the add option button to add  product options"/>
      </div>
  
-    <div className=" flex-col flex-1 grid md:grid-cols-3 lg:grid-cols-4 grid-cols-1 gap-8  h-full py-16 px-7">
+    <div className=" mx-7 flex-col md:w-[500px] flex  flex-1 justify-center">
       {productData?.map((product)=>(
       <ProductCard key={product?.id} image={product?.image} handleClick={handleVariant} title={product?.title} price={product?.price} id={product?.id} description={product.description.substring(0,80)+'...'}/>
       ))}
     </div>
-      <Button className="!bg-dark-blue !text-white px-2 py-4" onClick={handleVariant}>
-        Continue to variants page
-      </Button>
+      
     </div>
   );
 }
