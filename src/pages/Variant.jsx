@@ -120,9 +120,7 @@ function Variant() {
       }
     }
   }
-console.log("combinations", combinations);
- 
-console.log("optionList", optionList);
+
  
   async function resetVariants() {
     await dispatch(resetOptionDetails());
