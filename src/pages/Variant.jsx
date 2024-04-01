@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { variantOptions } from "../data/Data";
 import { setManagementDetails } from "../features/variant/variantSlice";
 import ExpandableTable from "./ExpandableTable";
+import { deleteIcon } from "../assets";
+import { ReactSVG } from "react-svg";
 
 function Variant() {
   const [form] = Form.useForm();
@@ -13,7 +15,7 @@ function Variant() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [data1, setdata1] = useState({});
-  const [variantCount, setVariantCount] = useState(0);
+  const [variantCount, setVariantCount] = useState(1);
   const [childCount, setChildCount] = useState({});
   const [varArray, setVarArray] = useState([]);
   const [showChild, setShowChild] = useState({});
@@ -78,10 +80,7 @@ function Variant() {
     handleRemoveParentFinish(index);
     generateCombinations(itemsArray, 0, "");
   };
-  const [editingValue, setEditingValue] = useState("");
-  const handleEdit = (value) => {
-    console.log("edit reached", value);
-  };
+ 
 
   useEffect(() => {
     const newChildCount = { ...childCount };
@@ -98,39 +97,12 @@ function Variant() {
     setItemsArray(managementDetails);
   }, [managementDetails]);
 
-  console.log("itemsArray", itemsArray); // Initialize an array to store combinations
-  // Function to generate combinations
-  // const data = [
-  //   {
-  //     usrType0: "Size",
-  //     variantName0: "size 1",
-  //     variantName00: "size 2",
-  //     variantName01: "size 3",
-  //   },
-  //   {
-  //     usrType0: "Color",
-  //     variantName0: "color 1",
-  //     variantName00: "color 2",
-  //     variantName01: "color 3",
-  //   },
-  //   {
-  //     usrType0: "Material",
-  //     variantName0: "material 1",
-  //     variantName00: "material 2",
-  //     variantName01: "material 3",
-  //   },
-  //   {
-  //     usrType0: "Style",
-  //     variantName0: "style 1",
-  //     variantName00: "style 2",
-  //     variantName01: "style 3",
-  //   },
-  // ];
+  console.log("itemsArray", itemsArray); 
+
 
     const [combinations, setCombinations] = useState([]);
 function generateCombinations(data, index, combination) {
   if (index === data.length) {
-    //console.log("combination", combination.trim());
       setCombinations((prevCombinations) => [
         ...prevCombinations,
         combination.trim(),
@@ -146,27 +118,18 @@ function generateCombinations(data, index, combination) {
   }
 }
 
-// Start with an empty combination
-//generateCombinations(data, 0, "");
 
 
 useEffect(()=>{
 generateCombinations(itemsArray, 0, "");
 },[])
   return (
-    <div>
+    <div className="flex flex-col justify-center  py-12  bg-light-blue-bg items-center">
       <>
-        <div>
-          <h1>All Possible Combinations:</h1>
-          <ul>
-            {combinations.map((combination, index) => (
-              <li key={index}>{combination}</li>
-            ))}
-          </ul>
-        </div>
+        
         {itemsArray?.length > 0 &&
           itemsArray?.map((item, index) => (
-            <div className="flex items-center" key={index + 1}>
+            <div className="flex items-center " key={index + 1}>
               <div className="justify start mr-10">1</div>
 
               <div className="flex flex-col w-full">
@@ -181,20 +144,7 @@ generateCombinations(itemsArray, 0, "");
                     }
                   </span>
 
-                  <Button
-                    className="flex justify-end"
-                    onClick={() =>
-                      handleEdit(
-                        item[
-                          Object?.keys(item).find((key) =>
-                            key.startsWith("variantName")
-                          )
-                        ]
-                      )
-                    }
-                  >
-                    edit
-                  </Button>
+                 
                 </div>
                 <div className="flex items-center mt-5 gap-x-5">
                   {Object.keys(item)
@@ -217,7 +167,7 @@ generateCombinations(itemsArray, 0, "");
               key={index}
               layout="vertical"
               onFinish={(values) => onFinish(values, index)}
-              className="lg:w-[539px] w-full "
+              className="w-3/4 bg-light-blue-bg rounded-md "
               form={formRefs.current[index]}
             >
               <div className="flex flex-col gap-y-5">
@@ -261,13 +211,15 @@ generateCombinations(itemsArray, 0, "");
                     ]}
                   >
                     <div className="flex gap-x-5 items-center">
-                      <Input className="rounded-[4px] h-[52px] w-full border border-black" />
-                      <Button
-                        className="text-red-500"
+                      <Input className="rounded-[4px] h-[52px] w-full border border-black"/>
+
+                      <button
+                        type="button"
+                        className=" px-3 py-1 rounded"
                         onClick={() => handleRemoveParent(index)}
                       >
-                        delete
-                      </Button>
+                        <ReactSVG src={deleteIcon}/>
+                      </button>
                     </div>
                   </Form.Item>
 
@@ -285,18 +237,19 @@ generateCombinations(itemsArray, 0, "");
                     >
                       <div className="flex gap-x-5 items-center">
                         <Input className="rounded-[4px] h-[52px] w-full border border-black" />
-                        <Button
-                          className="text-red-500"
-                          onClick={() => handleRemoveChildCount(index)}
-                        >
-                          delete
-                        </Button>
+                        <button
+                        type="button"
+                        className=" px-3 py-1 rounded"
+                        onClick={() => handleRemoveParent(index)}
+                      >
+                        <ReactSVG src={deleteIcon}/>
+                      </button>
                       </div>
                     </Form.Item>
                   ))}
                   <div className="flex flex-col gap-y-5">
                     <Button
-                      className="text-red-500"
+                      className="bg-light-blue-bg hover:bg-gray !text-dark-blue border !border-dark-blue float-left "
                       onClick={() => handleChildCount(index)}
                     >
                       Add Child
@@ -304,10 +257,11 @@ generateCombinations(itemsArray, 0, "");
                     <button
                       type="submit"
                       key="submit"
-                      className="!bg-darkBlue px-2 py-2 text-white justify-start"
+                      className=" bg-dark-blue hover:bg-blue px-2 py-2 text-white justify-start"
                     >
                       Done
                     </button>
+                    
                   </div>
                 </div>
               </div>
@@ -323,7 +277,10 @@ generateCombinations(itemsArray, 0, "");
           </Button>
         </div>
       </>
-      <ExpandableTable combinations={combinations} /> 
+     {combinations?.length>1? <ExpandableTable combinations={combinations} />:
+     <div className="">
+      <h1>No variants yet</h1>
+     </div> }
     </div>
   );
 }

@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/variant" element={<Variant />}></Route>
+        <Route exact path="/" element={<Variant />}></Route>
         <Route exact path="/expandable" element={<ExpandableTable />}></Route>
       </Routes>
     </>

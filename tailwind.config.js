@@ -3,28 +3,23 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 export default {
   content: ["./src/**/*.{html,js,jsx}", "./node_modules/flowbite/**/*.js"],
-  theme: {
+   theme: {
     extend: {
-      fontFamily: {
-        jakartaSans: ["Plus Jakarta Sans"],
-        PublicSans: ["Public Sans"],
+      colors:{
+        'dark-blue':'#1a4068',
+        'light-blue-bg':'#F3F5F7',
+        blue:'#3876B7',
+        'light-orange-bg':'#FFFBF2',
+        gray:'#D9D9D9',
+        orange:'#FFA500'
       },
-      colors: {
-        darkGray: "#F0F7F0",
-        blackest: "#212121",
-        darkBlue: "#261f5d",
-        green: "#261f5d",
-        lightGreen: "#ECF7EC",
-        black1: "#333",
-        black2: "#222",
-        black3: "rgba(20, 20, 20, 0.70)",
-
-        lightBlue: "#45a0c6",
+      fontFamily:{
+        'lato':['Lato','sans-serif'],
+        'montserrat':['Montserrat','sans-serif']
       },
-      screens: {
-        xs: "360px",
-        ...defaultTheme.screens,
-      },
+      fontSize:{
+        'header':'32px'
+      }
     },
   },
 
