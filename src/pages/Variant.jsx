@@ -251,7 +251,7 @@ generateCombinations(itemsArray, 0, "");
 
                     <div className="flex justify-end">
                       <Button
-                        className="bg-light-blue-bg hover:bg-blue !text-white border !border-dark-blue w-[200px] py-2 mr-14
+                        className="bg-light-blue-bg hover:bg-blue !text-dark-blue border !border-dark-blue w-[200px] py-2 mr-14
                       flex items-center"
                         onClick={() => handleChildCount(index)}
                         icon={<PlusOutlined />}
