@@ -80,7 +80,7 @@ function Variant() {
       generateCombinations(optionList, 0, "");
       setShowForm(false);
       handleRemoveParentFinish(index);
-      // window.location.reload();
+      window.location.reload();
   };
 
   useEffect(() => {
@@ -104,7 +104,6 @@ function Variant() {
   function generateCombinations(data, index, combination) {
     if (index === data?.length ){
       setCombinations((prevCombinations) =>{
-        console.log("prevCombinations", prevCombinations);
         return [
         ...prevCombinations,
         combination.trim(),
