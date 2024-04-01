@@ -3,11 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { variantOptions } from "../data/Data";
-import { setManagementDetails } from "../features/variant/variantSlice";
+import {
+  resetOptionDetails,
+  setManagementDetails,
+} from "../features/variant/variantSlice";
 import ExpandableTable from "./ExpandableTable";
 import { addIcon, deleteIcon } from "../assets";
 import { ReactSVG } from "react-svg";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, StopOutlined } from "@ant-design/icons";
 
 function Variant() {
   const [form] = Form.useForm();
@@ -51,7 +54,6 @@ function Variant() {
   };
 
   const handleRemoveParentFinish = (index) => {
-    console.log("removing index", index);
     setVariantCount((prevCount) => prevCount - 1);
     setVarArray((prevState) => {
       const updatedVarArray = [...prevState];
@@ -81,7 +83,6 @@ function Variant() {
     handleRemoveParentFinish(index);
     generateCombinations(itemsArray, 0, "");
   };
- 
 
   useEffect(() => {
     const newChildCount = { ...childCount };
@@ -98,39 +99,48 @@ function Variant() {
     setItemsArray(managementDetails);
   }, [managementDetails]);
 
-  console.log("itemsArray", itemsArray); 
+  console.log("itemsArray", itemsArray);
 
-
-    const [combinations, setCombinations] = useState([]);
-function generateCombinations(data, index, combination) {
-  if (index === data.length) {
+  const [combinations, setCombinations] = useState([]);
+  function generateCombinations(data, index, combination) {
+    if (index === data.length) {
       setCombinations((prevCombinations) => [
         ...prevCombinations,
         combination.trim(),
       ]);
-    return;
-  }
+      return;
+    }
 
-  const item = data[index];
-  for (let key in item) {
-    if (key.startsWith("variantName")) {
-      generateCombinations(data, index + 1, combination + " - " + item[key]);
+    const item = data[index];
+    for (let key in item) {
+      if (key.startsWith("variantName")) {
+        generateCombinations(data, index + 1, combination + " - " + item[key]);
+      }
     }
   }
-}
 
+  async function resetVariants() {
+    await dispatch(resetOptionDetails());
+    setCombinations([])
+  }
 
+  useEffect(() => {
+    generateCombinations(itemsArray, 0, "");
+  }, [itemsArray]);
 
-useEffect(()=>{
-generateCombinations(itemsArray, 0, "");
-},[])
+  // useEffect(() => {
+  //   resetVariants();
+  // }, []);
   return (
-    <div className="bg-light-blue-bg">
+    <div className="bg-light-blue-bg min-h-[100vh]">
       <div className="flex flex-col justify-center py-12 items-center ">
         <div className="w-3/4">
           {itemsArray?.length > 0 &&
             itemsArray?.map((item, index) => (
-              <div className="flex items-center card bg-white mt-10 p-10" key={index + 1}>
+              <div
+                className="flex items-center card bg-white mt-10 p-10"
+                key={index + 1}
+              >
                 {/* <div className="justify start mr-10">1</div> */}
 
                 <div className="flex flex-col w-full">
@@ -274,19 +284,30 @@ generateCombinations(itemsArray, 0, "");
               </Form>
             ))}
           </>
-          <div className="flex flex-col w-full">
+          <div className="flex w-full justify-end gap-x-10">
             <Button
-              className="bg-gray hover:bg-light-blue-bg  !text-dark-blue border !border-dark-blue flex mt-5 py-2"
+              className="!bg-dark-blue hover:bg-blue  !text-white border !border-dark-blue flex mt-5 py-2"
               onClick={handleAddParent}
               icon={<PlusOutlined />}
             >
               Add Option
             </Button>
+            <Button
+              className="bg-gray hover:bg-red-900  !text-red-500 border !border-red-500 flex mt-5 py-2"
+              onClick={resetVariants}
+              icon={<StopOutlined />}
+            >
+              Clear All
+            </Button>
           </div>
         </div>
-       
+
+        <ExpandableTable combinations={combinations} />
+        {/* {itemsArray && itemsArray?.length > 0 ? (
           <ExpandableTable combinations={combinations} />
-       
+        ) : (
+          <div>Options you add will be displayed here</div>
+        )} */}
       </div>
     </div>
   );

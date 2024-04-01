@@ -68,7 +68,7 @@ function ExpandableTable({ combinations }) {
   
 
   return (
-    <div className="w-3/4 mt-10"> 
+    <div className="w-3/4 mt-10">  
       <HeaderText text="Table Variants" />
       <Table
         columns={columns}

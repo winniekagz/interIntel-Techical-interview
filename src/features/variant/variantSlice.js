@@ -16,6 +16,9 @@ const variantSlice = createSlice({
     setManagementDetails: (state, action) => {
       state.managementDetails = action.payload;
     },
+    resetOptionDetails:(state,action)=>{
+     state.managementDetails = initialState.managementDetails 
+    }
   },
 
   extraReducers: (builder) => {
@@ -24,4 +27,5 @@ const variantSlice = createSlice({
 });
 
 export default variantSlice.reducer;
-export const { reset, setManagementDetails } = variantSlice.actions;
+export const { reset, setManagementDetails, resetOptionDetails } =
+  variantSlice.actions;
