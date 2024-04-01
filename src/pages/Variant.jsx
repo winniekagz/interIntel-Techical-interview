@@ -176,11 +176,11 @@ function Variant() {
               >
                 <div className="flex flex-col gap-y-5">
                   <div className="card p-10">
-                    <div>
+                    <div className="flex justify-end">
                       {" "}
                       <button
                         type="button"
-                        className=" px-3 py-1 rounded justify-end"
+                        className=" px-3 py-1 rounded"
                         onClick={() => handleRemoveParentFinish(index)}
                       >
                         <CloseOutlined className="text-red-500" />
