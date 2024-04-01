@@ -102,7 +102,6 @@ function Variant() {
 
   const [combinations, setCombinations] = useState([]);
   function generateCombinations(data, index, combination) {
-    console.log("called");
     if (index === data?.length ){
       setCombinations((prevCombinations) =>{
         console.log("prevCombinations", prevCombinations);
@@ -122,6 +121,8 @@ function Variant() {
     }
   }
 console.log("combinations", combinations);
+ 
+console.log("optionList", optionList);
  
   async function resetVariants() {
     await dispatch(resetOptionDetails());
