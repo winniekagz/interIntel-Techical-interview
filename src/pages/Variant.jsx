@@ -276,7 +276,7 @@ generateCombinations(itemsArray, 0, "");
           </>
           <div className="flex flex-col w-full">
             <Button
-              className="!bg-gray text-dark-blue w-full flex mt-5 py-2"
+              className="bg-gray hover:bg-light-blue-bg  !text-dark-blue border !border-dark-blue flex mt-5 py-2"
               onClick={handleAddParent}
               icon={<PlusOutlined />}
             >
