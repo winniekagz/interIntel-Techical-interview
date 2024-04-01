@@ -105,6 +105,7 @@ function Variant() {
     console.log("called");
     if (index === data?.length ){
       setCombinations((prevCombinations) =>{
+        console.log("prevCombinations", prevCombinations);
         return [
         ...prevCombinations,
         combination.trim(),
@@ -124,8 +125,12 @@ function Variant() {
  
   async function resetVariants() {
     await dispatch(resetOptionDetails());
+    resetCombinations()
+  }
+   async function resetCombinations() {
     await setCombinations([]);
   }
+
 
   useEffect(() => {
     generateCombinations(optionList, 0, "");
