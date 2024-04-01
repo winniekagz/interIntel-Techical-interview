@@ -10,7 +10,7 @@ import {
 import ExpandableTable from "./ExpandableTable";
 import { addIcon, deleteIcon } from "../assets";
 import { ReactSVG } from "react-svg";
-import { PlusOutlined, StopOutlined } from "@ant-design/icons";
+import { PlusOutlined, StopOutlined, CloseOutlined } from "@ant-design/icons";
 
 function Variant() {
   const [form] = Form.useForm();
@@ -63,8 +63,6 @@ function Variant() {
   };
 
   const onFinish = async (values, index) => {
-    console.log("Submitting form for index", index, "with values:", values);
-
     const existingIndex = managementDetails.findIndex((entry) => {
       return Object.values(entry).some((entryValue) =>
         Object.values(values).some((value) => value === entryValue)
@@ -78,10 +76,9 @@ function Variant() {
     } else {
       await dispatch(setManagementDetails([...managementDetails, values]));
     }
-
-    setShowForm(false);
-    handleRemoveParentFinish(index);
-    generateCombinations(itemsArray, 0, "");
+    await generateCombinations(itemsArray, 0, "");
+    await setShowForm(false);
+    await handleRemoveParentFinish(index);
   };
 
   useEffect(() => {
@@ -103,6 +100,7 @@ function Variant() {
 
   const [combinations, setCombinations] = useState([]);
   function generateCombinations(data, index, combination) {
+    console.log("called")
     if (index === data.length) {
       setCombinations((prevCombinations) => [
         ...prevCombinations,
@@ -121,16 +119,13 @@ function Variant() {
 
   async function resetVariants() {
     await dispatch(resetOptionDetails());
-    setCombinations([])
+    await setCombinations([]);
   }
 
   useEffect(() => {
     generateCombinations(itemsArray, 0, "");
   }, [itemsArray]);
 
-  // useEffect(() => {
-  //   resetVariants();
-  // }, []);
   return (
     <div className="bg-light-blue-bg min-h-[100vh]">
       <div className="flex flex-col justify-center py-12 items-center ">
@@ -181,6 +176,16 @@ function Variant() {
               >
                 <div className="flex flex-col gap-y-5">
                   <div className="card p-10">
+                    <div>
+                      {" "}
+                      <button
+                        type="button"
+                        className=" px-3 py-1 rounded justify-end"
+                        onClick={() => handleRemoveParentFinish(index)}
+                      >
+                        <CloseOutlined className="text-red-500" />
+                      </button>
+                    </div>
                     <Form.Item
                       name={`usrType${index}`}
                       label={`Option Name`}
@@ -226,7 +231,7 @@ function Variant() {
                         <button
                           type="button"
                           className=" px-3 py-1 rounded"
-                          onClick={() => handleRemoveParent(index)}
+                          onClick={() => handleRemoveChildCount(index)}
                         >
                           <ReactSVG src={deleteIcon} />
                         </button>
@@ -251,7 +256,7 @@ function Variant() {
                           <button
                             type="button"
                             className=" px-3 py-1 rounded"
-                            onClick={() => handleRemoveParent(index)}
+                            onClick={() => handleRemoveChildCount(index)}
                           >
                             <ReactSVG src={deleteIcon} />
                           </button>
