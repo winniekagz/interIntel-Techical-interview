@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { variantOptions } from "../data/Data";
 import { setManagementDetails } from "../features/variant/variantSlice";
 import ExpandableTable from "./ExpandableTable";
-import { deleteIcon } from "../assets";
+import { addIcon, deleteIcon } from "../assets";
 import { ReactSVG } from "react-svg";
+import { PlusOutlined } from "@ant-design/icons";
 
 function Variant() {
   const [form] = Form.useForm();
@@ -124,163 +125,172 @@ useEffect(()=>{
 generateCombinations(itemsArray, 0, "");
 },[])
   return (
-    <div className="flex flex-col justify-center  py-12  bg-light-blue-bg items-center">
-      <>
-        
-        {itemsArray?.length > 0 &&
-          itemsArray?.map((item, index) => (
-            <div className="flex items-center " key={index + 1}>
-              <div className="justify start mr-10">1</div>
+    <div className="bg-light-blue-bg">
+      <div className="flex flex-col justify-center py-12 items-center">
+        <>
+          {itemsArray?.length > 0 &&
+            itemsArray?.map((item, index) => (
+              <div className="flex items-center " key={index + 1}>
+                <div className="justify start mr-10">1</div>
 
-              <div className="flex flex-col w-full">
-                <div className="flex justify-between items-center ">
-                  <span>
-                    {
-                      item[
-                        Object?.keys(item).find((key) =>
-                          key.startsWith("usrType")
-                        )
-                      ]
-                    }
-                  </span>
-
-                 
-                </div>
-                <div className="flex items-center mt-5 gap-x-5">
-                  {Object.keys(item)
-                    .filter((key) => key.startsWith("variantName"))
-                    .map((key, childIndex) => (
-                      <span
-                        key={childIndex}
-                        className="rounded-[30px] h-[30px] w-[100px] flex items-center justify-center bg-[#808080]"
-                      >
-                        {item[key]}
-                      </span>
-                    ))}
+                <div className="flex flex-col w-full">
+                  <div className="flex justify-between items-center ">
+                    <span>
+                      {
+                        item[
+                          Object?.keys(item).find((key) =>
+                            key.startsWith("usrType")
+                          )
+                        ]
+                      }
+                    </span>
+                  </div>
+                  <div className="flex items-center mt-5 gap-x-5">
+                    {Object.keys(item)
+                      .filter((key) => key.startsWith("variantName"))
+                      .map((key, childIndex) => (
+                        <span
+                          key={childIndex}
+                          className="rounded-[30px] h-[30px] w-[100px] flex items-center justify-center bg-[#808080]"
+                        >
+                          {item[key]}
+                        </span>
+                      ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        <>
-          {[...Array(variantCount)].map((_, index) => (
-            <Form
-              key={index}
-              layout="vertical"
-              onFinish={(values) => onFinish(values, index)}
-              className="w-3/4 bg-light-blue-bg rounded-md "
-              form={formRefs.current[index]}
-            >
-              <div className="flex flex-col gap-y-5">
-                <div className="card mt-10">
-                  <Form.Item
-                    name={`usrType${index}`}
-                    label={`Type ${index + 1}`}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please add user type",
-                      },
-                    ]}
-                  >
-                    <Select
-                      className="activity-select-tag activity-select-icon"
-                      allowClear
-                      style={{
-                        width: "100%",
-                        height: "44px",
-                      }}
-                      placeholder="Please select user type"
-                      options={variantOptions}
-                      onChange={(value) => {
-                        setdata1((prevData) => ({
-                          ...prevData,
-                          objectName: value,
-                        }));
-                      }}
-                    />
-                  </Form.Item>
-
-                  <Form.Item
-                    label={`Variant ${index + 1}`}
-                    name={`variantName${index}`}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please add variant",
-                      },
-                    ]}
-                  >
-                    <div className="flex gap-x-5 items-center">
-                      <Input className="rounded-[4px] h-[52px] w-full border border-black"/>
-
-                      <button
-                        type="button"
-                        className=" px-3 py-1 rounded"
-                        onClick={() => handleRemoveParent(index)}
-                      >
-                        <ReactSVG src={deleteIcon}/>
-                      </button>
-                    </div>
-                  </Form.Item>
-
-                  {[...Array(childCount[index] || 0)].map((_, childIndex) => (
+            ))}
+          <>
+            {[...Array(variantCount)].map((_, index) => (
+              <Form
+                key={index}
+                layout="vertical"
+                onFinish={(values) => onFinish(values, index)}
+                className="w-3/4 bg-white rounded-md !mt-10 "
+                form={formRefs.current[index]}
+              >
+                <div className="flex flex-col gap-y-5">
+                  <div className="card p-10">
                     <Form.Item
-                      key={childIndex}
-                      name={`variantName${index}${childIndex}`}
-                      label={`Variant ${index + 1}.${childIndex + 1}`}
+                      name={`usrType${index}`}
+                      label={`Option Name`}
                       rules={[
                         {
                           required: true,
-                          message: "Please add variant",
+                          message: "Please select Option",
+                        },
+                      ]}
+                    >
+                      <Select
+                        className="activity-select-tag activity-select-icon"
+                        allowClear
+                        style={{
+                          width: "100%",
+                          height: "44px",
+                        }}
+                        placeholder="Please select user type"
+                        options={variantOptions}
+                        onChange={(value) => {
+                          setdata1((prevData) => ({
+                            ...prevData,
+                            objectName: value,
+                          }));
+                        }}
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      label={`Option Name`}
+                      name={`variantName${index}`}
+                      className="!ml-10"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please add option name",
                         },
                       ]}
                     >
                       <div className="flex gap-x-5 items-center">
                         <Input className="rounded-[4px] h-[52px] w-full border border-black" />
+
                         <button
-                        type="button"
-                        className=" px-3 py-1 rounded"
-                        onClick={() => handleRemoveParent(index)}
-                      >
-                        <ReactSVG src={deleteIcon}/>
-                      </button>
+                          type="button"
+                          className=" px-3 py-1 rounded"
+                          onClick={() => handleRemoveParent(index)}
+                        >
+                          <ReactSVG src={deleteIcon} />
+                        </button>
                       </div>
                     </Form.Item>
-                  ))}
-                  <div className="flex flex-col gap-y-5">
-                    <Button
-                      className="bg-light-blue-bg hover:bg-gray !text-dark-blue border !border-dark-blue float-left "
-                      onClick={() => handleChildCount(index)}
-                    >
-                      Add Child
-                    </Button>
-                    <button
-                      type="submit"
-                      key="submit"
-                      className=" bg-dark-blue hover:bg-blue px-2 py-2 text-white justify-start"
-                    >
-                      Done
-                    </button>
-                    
+
+                    {[...Array(childCount[index] || 0)].map((_, childIndex) => (
+                      <Form.Item
+                        key={childIndex}
+                        name={`variantName${index}${childIndex}`}
+                        label={`Option Name`}
+                        className="!ml-10"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please add option name",
+                          },
+                        ]}
+                      >
+                        <div className="flex gap-x-5 items-center">
+                          <Input className="rounded-[4px] h-[52px] w-full border border-black" />
+                          <button
+                            type="button"
+                            className=" px-3 py-1 rounded"
+                            onClick={() => handleRemoveParent(index)}
+                          >
+                            <ReactSVG src={deleteIcon} />
+                          </button>
+                        </div>
+                      </Form.Item>
+                    ))}
+
+                    <div className="flex justify-end">
+                      <Button
+                        className="bg-light-blue-bg hover:bg-blue !text-white border !border-dark-blue w-[200px] py-2 mr-14
+                      flex items-center"
+                        onClick={() => handleChildCount(index)}
+                        icon={<PlusOutlined />}
+                      >
+                        Add Option Variant
+                      </Button>
+                    </div>
+
+                    <div className="py-10 flex justify-start ml-10">
+                      <button
+                        type="submit"
+                        key="submit"
+                        className=" bg-dark-blue hover:bg-blue px-2 py-2 text-white justify-start w-[150px]"
+                      >
+                        Done
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Form>
-          ))}
+              </Form>
+            ))}
+          </>
+          <div className="flex flex-col">
+            <Button
+              className="!bg-red-500 !text-white flex mt-5"
+              onClick={handleAddParent}
+            >
+              Add Option
+            </Button>
+          </div>
         </>
-        <div className="flex flex-col">
-          <Button
-            className="!bg-red-500 !text-white flex mt-5"
-            onClick={handleAddParent}
-          >
-            Add Variant
-          </Button>
-        </div>
-      </>
-     {combinations?.length>1? <ExpandableTable combinations={combinations} />:
-     <div className="">
-      <h1>No variants yet</h1>
-     </div> }
+        {combinations?.length > 1 ? (
+          <ExpandableTable combinations={combinations} />
+        ) : (
+          <div className="">
+            <h1>No variants yet</h1>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
