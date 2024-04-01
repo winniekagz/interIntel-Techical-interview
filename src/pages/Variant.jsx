@@ -13,11 +13,8 @@ import { ReactSVG } from "react-svg";
 import { PlusOutlined, StopOutlined, CloseOutlined } from "@ant-design/icons";
 
 function Variant() {
-  const [form] = Form.useForm();
-  const formRef = useRef(null);
   const formRefs = useRef({});
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [data1, setdata1] = useState({});
   const [variantCount, setVariantCount] = useState(1);
   const [childCount, setChildCount] = useState({});
@@ -79,8 +76,8 @@ function Variant() {
     }
       generateCombinations(optionList, 0, "");
       setShowForm(false);
-      handleRemoveParentFinish(index);
-       window.location.reload();
+      handleRemoveParentFinish(index); 
+      window.location.reload();
   };
 
   useEffect(() => {
@@ -101,21 +98,12 @@ function Variant() {
 
 
   const [combinations, setCombinations] = useState([]);
-  function generateCombinations(data, index, combination) {
-    // if (index === data?.length ){
-    //   setCombinations((prevCombinations) =>{
-    //     console.log("prevCombinations", prevCombinations);
-    //     return [
-    //     ...prevCombinations,
-    //     combination.trim(),
-    //   ]});
-    //   return;
-    // }
-     if (index === data?.length) {
+  function generateCombinations(data, index, combination) {  
+     if (index === data?.length) { 
        setCombinations((prevCombinations) => { 
-         if (!prevCombinations.includes(combination.trim())) {
+         if (!prevCombinations.includes(combination.trim())) { 
            return [...prevCombinations, combination.trim()];
-         } else {
+         } else { 
            return prevCombinations;  
          }
        });
@@ -145,7 +133,7 @@ function Variant() {
     generateCombinations(optionList, 0, "");
   }, [optionList]);
 
-
+ 
   return (
     <div className="bg-light-blue-bg min-h-[100vh]">
       <div className="flex flex-col justify-center py-12 items-center ">
