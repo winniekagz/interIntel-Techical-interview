@@ -80,7 +80,7 @@ function Variant() {
       generateCombinations(optionList, 0, "");
       setShowForm(false);
       handleRemoveParentFinish(index);
-      window.location.reload();
+      // window.location.reload();
   };
 
   useEffect(() => {
@@ -137,7 +137,6 @@ console.log("optionList", optionList);
     generateCombinations(optionList, 0, "");
   }, [optionList]);
 
-   
 
   return (
     <div className="bg-light-blue-bg min-h-[100vh]">
