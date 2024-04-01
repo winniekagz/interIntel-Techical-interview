@@ -1,39 +1,76 @@
 import React from "react";
 import { Table } from "antd";
- 
-function ExpandableTable({ combinations }) {
-    console.log("combinations",combinations);
-     const titles = Object.keys(combinations[0]);
-     const dataSource = combinations.map((item, index) => ({
-       key: index,
-       name: item[titles[0]],
-       description: Object.values(item),
-     }));
+const columns = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+  },
+  
+  
+];
+const data = [
+  {
+    key: 1,
+    name: "John Brown", 
+    description:
+      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
+  },
+  {
+    key: 2,
+    name: "Jim Green", 
+    description:
+      "My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.",
+  },
+  {
+    key: 3,
+    name: "Not Expandable", 
+    description: "This not expandable",
+  },
+  {
+    key: 4,
+    name: "Joe Black", 
+    description:
+      "My name is Joe Black, I am 32 years old, living in Sydney No. 1 Lake Park.",
+  },
+];
+const generateKey = (index, size) => `${size}-${index}`;
 
-     // Generate columns dynamically based on titles
-     const columns = titles.map((title, index) => ({
-       title: "title",
-       dataIndex: title,
-       key: index,
-       render: (text) => <p style={{ margin: 0 }}>{text}</p>,
-     }));
+function ExpandableTable({ combinations }) {
+  const groupedData = {};
+
+  
+  combinations.forEach((item, index) => {
+    const size = item.split(" - ")[0];
+    if (!groupedData[size]) {
+      groupedData[size] = [];
+    }
+    groupedData[size].push({
+      key: generateKey(index, size),
+      name: item,
+      description: `Description for ${item}`,
+    });
+  });
+
+  const expandedRowRender = (record) => (
+    <p style={{ margin: 0 }}>{record.description}</p>
+  );
+
+  const rowExpandable = (record) => record.children; 
+
+  const expandedData = Object.keys(groupedData).map((size) => ({
+    key: size,
+    name: size,
+    children: groupedData[size],
+  }));
+
+  
 
   return (
     <Table
       columns={columns}
-      expandable={{
-        expandedRowRender: (record) => (
-          <p
-            style={{
-              margin: 0,
-            }}
-          >
-            {record.description}
-          </p>
-        ),
-        rowExpandable: (record) => record.name !== "Not Expandable",
-      }}
-      dataSource={dataSource}
+      expandable={{ expandedRowRender, rowExpandable }}
+      dataSource={expandedData}
     />
   );
 }

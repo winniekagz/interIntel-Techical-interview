@@ -323,7 +323,7 @@ generateCombinations(itemsArray, 0, "");
           </Button>
         </div>
       </>
-      <ExpandableTable combinations={combinations} />
+      <ExpandableTable combinations={combinations} /> 
     </div>
   );
 }
