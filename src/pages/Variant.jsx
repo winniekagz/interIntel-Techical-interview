@@ -81,7 +81,7 @@ function Variant() {
       setShowForm(false);
       handleRemoveParentFinish(index);
          generateCombinations(optionList, 0, "");
-      // window.location.reload();
+      window.location.reload();
   };
 
   useEffect(() => {
