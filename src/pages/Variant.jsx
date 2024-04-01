@@ -3,11 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { variantOptions } from "../data/Data";
-import { setManagementDetails } from "../features/variant/variantSlice";
+import {
+  resetOptionDetails,
+  setOptionDetails,
+} from "../features/variant/variantSlice";
 import ExpandableTable from "./ExpandableTable";
 import { addIcon, deleteIcon } from "../assets";
 import { ReactSVG } from "react-svg";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, StopOutlined, CloseOutlined } from "@ant-design/icons";
 
 function Variant() {
   const [form] = Form.useForm();
@@ -21,9 +24,9 @@ function Variant() {
   const [varArray, setVarArray] = useState([]);
   const [showChild, setShowChild] = useState({});
   const [showForm, setShowForm] = useState(true);
-  const { managementDetails } = useSelector((state) => state.variants);
+  const { optionDetails } = useSelector((state) => state.variants);
 
-  const [itemsArray, setItemsArray] = useState(managementDetails);
+  const [optionList, setOptionList] = useState(optionDetails);
 
   const handleAddParent = () => {
     setVariantCount((prevCount) => prevCount + 1);
@@ -51,7 +54,6 @@ function Variant() {
   };
 
   const handleRemoveParentFinish = (index) => {
-    console.log("removing index", index);
     setVariantCount((prevCount) => prevCount - 1);
     setVarArray((prevState) => {
       const updatedVarArray = [...prevState];
@@ -60,28 +62,26 @@ function Variant() {
     });
   };
 
-  const onFinish = async (values, index) => {
-    console.log("Submitting form for index", index, "with values:", values);
 
-    const existingIndex = managementDetails.findIndex((entry) => {
+  const onFinish = async (values, index) => {
+    const existingIndex = optionDetails.findIndex((entry) => {
       return Object.values(entry).some((entryValue) =>
         Object.values(values).some((value) => value === entryValue)
       );
     });
 
     if (existingIndex !== -1) {
-      const updatedManagementDetails = [...managementDetails];
-      updatedManagementDetails[existingIndex] = { ...values };
-      await dispatch(setManagementDetails(updatedManagementDetails));
+      const updatedoptionDetails = [...optionDetails];
+      updatedoptionDetails[existingIndex] = { ...values };
+      await dispatch(setOptionDetails(updatedoptionDetails));
     } else {
-      await dispatch(setManagementDetails([...managementDetails, values]));
+      await dispatch(setOptionDetails([...optionDetails, values]));
     }
-
-    setShowForm(false);
-    handleRemoveParentFinish(index);
-    generateCombinations(itemsArray, 0, "");
+      generateCombinations(optionList, 0, "");
+      setShowForm(false);
+      handleRemoveParentFinish(index);
+      window.location.reload();
   };
- 
 
   useEffect(() => {
     const newChildCount = { ...childCount };
@@ -95,42 +95,59 @@ function Variant() {
   }, [variantCount]);
 
   useEffect(() => {
-    setItemsArray(managementDetails);
-  }, [managementDetails]);
-
-  console.log("itemsArray", itemsArray); 
+    setOptionList(optionDetails);
+  }, [optionDetails]);
 
 
-    const [combinations, setCombinations] = useState([]);
-function generateCombinations(data, index, combination) {
-  if (index === data.length) {
-      setCombinations((prevCombinations) => [
+
+  const [combinations, setCombinations] = useState([]);
+  function generateCombinations(data, index, combination) {
+    console.log("called");
+    if (index === data?.length ){
+      setCombinations((prevCombinations) =>{
+        console.log("prevCombinations", prevCombinations);
+        return [
         ...prevCombinations,
         combination.trim(),
-      ]);
-    return;
-  }
+      ]});
+      return;
+    }
+ 
 
-  const item = data[index];
-  for (let key in item) {
-    if (key.startsWith("variantName")) {
-      generateCombinations(data, index + 1, combination + " - " + item[key]);
+    const item = data[index];
+    for (let key in item) {
+      if (key.startsWith("variantName")) {
+        generateCombinations(data, index + 1, combination + " - " + item[key]);
+      }
     }
   }
-}
+
+ 
+  async function resetVariants() {
+    await dispatch(resetOptionDetails());
+    resetCombinations()
+  }
+   async function resetCombinations() {
+    await setCombinations([]);
+  }
 
 
+  useEffect(() => {
+    generateCombinations(optionList, 0, "");
+  }, [optionList]);
 
-useEffect(()=>{
-generateCombinations(itemsArray, 0, "");
-},[])
+   
+
   return (
-    <div className="bg-light-blue-bg">
+    <div className="bg-light-blue-bg min-h-[100vh]">
       <div className="flex flex-col justify-center py-12 items-center ">
         <div className="w-3/4">
-          {itemsArray?.length > 0 &&
-            itemsArray?.map((item, index) => (
-              <div className="flex items-center card bg-white mt-10 p-10" key={index + 1}>
+          {optionList?.length > 0 &&
+            optionList?.map((item, index) => (
+              <div
+                className="flex items-center card bg-white mt-10 p-10"
+                key={index + 1}
+              >
                 {/* <div className="justify start mr-10">1</div> */}
 
                 <div className="flex flex-col w-full">
@@ -171,6 +188,16 @@ generateCombinations(itemsArray, 0, "");
               >
                 <div className="flex flex-col gap-y-5">
                   <div className="card p-10">
+                    <div className="flex justify-end">
+                      {" "}
+                      <button
+                        type="button"
+                        className=" px-3 py-1 rounded"
+                        onClick={() => handleRemoveParentFinish(index)}
+                      >
+                        <CloseOutlined className="text-red-500" />
+                      </button>
+                    </div>
                     <Form.Item
                       name={`usrType${index}`}
                       label={`Option Name`}
@@ -216,7 +243,7 @@ generateCombinations(itemsArray, 0, "");
                         <button
                           type="button"
                           className=" px-3 py-1 rounded"
-                          onClick={() => handleRemoveParent(index)}
+                          onClick={() => handleRemoveChildCount(index)}
                         >
                           <ReactSVG src={deleteIcon} />
                         </button>
@@ -236,12 +263,12 @@ generateCombinations(itemsArray, 0, "");
                           },
                         ]}
                       >
-                        <div className="flex gap-x-5 items-center">
+                        <div className="flex gap-x-5 itcombinationsems-center">
                           <Input className="rounded-[4px] h-[52px] w-full border border-black" />
                           <button
                             type="button"
                             className=" px-3 py-1 rounded"
-                            onClick={() => handleRemoveParent(index)}
+                            onClick={() => handleRemoveChildCount(index)}
                           >
                             <ReactSVG src={deleteIcon} />
                           </button>
@@ -274,19 +301,30 @@ generateCombinations(itemsArray, 0, "");
               </Form>
             ))}
           </>
-          <div className="flex flex-col w-full">
+          <div className="flex w-full justify-end gap-x-10">
             <Button
-              className="bg-gray hover:bg-light-blue-bg  !text-dark-blue border !border-dark-blue flex mt-5 py-2"
+              className="!bg-dark-blue hover:bg-blue  !text-white border !border-dark-blue flex mt-5 py-2"
               onClick={handleAddParent}
               icon={<PlusOutlined />}
             >
               Add Option
             </Button>
+            <Button
+              className="bg-gray hover:bg-red-900  !text-red-500 border !border-red-500 flex mt-5 py-2"
+              onClick={resetVariants}
+              icon={<StopOutlined />}
+            >
+              Clear All
+            </Button>
           </div>
         </div>
-       
+      
+        {/* <ExpandableTable combinations={combinations} /> */}
+          {optionList && optionList?.length > 0 ? (
           <ExpandableTable combinations={combinations} />
-       
+        ) : (
+          <div>Options you add will be displayed here</div>
+        )}  
       </div>
     </div>
   );

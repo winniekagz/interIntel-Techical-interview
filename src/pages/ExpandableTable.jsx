@@ -6,42 +6,15 @@ const columns = [
     title: "Name",
     dataIndex: "name",
     key: "name",
-  },
-  
+  }, 
   
 ];
-const data = [
-  {
-    key: 1,
-    name: "John Brown", 
-    description:
-      "My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.",
-  },
-  {
-    key: 2,
-    name: "Jim Green", 
-    description:
-      "My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.",
-  },
-  {
-    key: 3,
-    name: "Not Expandable", 
-    description: "This not expandable",
-  },
-  {
-    key: 4,
-    name: "Joe Black", 
-    description:
-      "My name is Joe Black, I am 32 years old, living in Sydney No. 1 Lake Park.",
-  },
-];
+ 
 const generateKey = (index, size) => `${size}-${index}`;
 
 function ExpandableTable({ combinations }) {
-  const groupedData = {};
-
-  
-  combinations.forEach((item, index) => {
+  const groupedData = {};  
+  combinations?.forEach((item, index) => {
     const size = item.split(" - ")[0];
     if (!groupedData[size]) {
       groupedData[size] = [];
@@ -68,7 +41,7 @@ function ExpandableTable({ combinations }) {
   
 
   return (
-    <div className="w-3/4 mt-10"> 
+    <div className="w-3/4 mt-10">  
       <HeaderText text="Table Variants" />
       <Table
         columns={columns}

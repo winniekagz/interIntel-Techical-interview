@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
- 
 const initialState = {
-  managementDetails: [],
+  optionDetails: [],
 };
 
 const variantSlice = createSlice({
@@ -11,10 +10,13 @@ const variantSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.managementDetails = [];
+      state.optionDetails = [];
     },
-    setManagementDetails: (state, action) => {
-      state.managementDetails = action.payload;
+    setOptionDetails: (state, action) => {
+      state.optionDetails = action.payload;
+    },
+    resetOptionDetails: (state, action) => {
+      state.optionDetails = initialState.optionDetails;
     },
   },
 
@@ -24,4 +26,5 @@ const variantSlice = createSlice({
 });
 
 export default variantSlice.reducer;
-export const { reset, setManagementDetails } = variantSlice.actions;
+export const { reset, setOptionDetails, resetOptionDetails } =
+  variantSlice.actions;
