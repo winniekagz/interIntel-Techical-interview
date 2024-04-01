@@ -126,8 +126,8 @@ generateCombinations(itemsArray, 0, "");
 },[])
   return (
     <div className="bg-light-blue-bg">
-      <div className="flex flex-col justify-center py-12 items-center">
-        <>
+      <div className="flex flex-col justify-center py-12 items-center ">
+        <div className="w-3/4">
           {itemsArray?.length > 0 &&
             itemsArray?.map((item, index) => (
               <div className="flex items-center " key={index + 1}>
@@ -166,7 +166,7 @@ generateCombinations(itemsArray, 0, "");
                 key={index}
                 layout="vertical"
                 onFinish={(values) => onFinish(values, index)}
-                className="w-3/4 bg-white rounded-md !mt-10 "
+                className="w-full bg-white rounded-md !mt-10 "
                 form={formRefs.current[index]}
               >
                 <div className="flex flex-col gap-y-5">
@@ -274,15 +274,16 @@ generateCombinations(itemsArray, 0, "");
               </Form>
             ))}
           </>
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <Button
-              className="!bg-red-500 !text-white flex mt-5"
+              className="!bg-gray text-dark-blue w-full flex mt-5 py-2"
               onClick={handleAddParent}
+              icon={<PlusOutlined />}
             >
               Add Option
             </Button>
           </div>
-        </>
+        </div>
         {combinations?.length > 1 ? (
           <ExpandableTable combinations={combinations} />
         ) : (
