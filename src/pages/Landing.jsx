@@ -22,6 +22,7 @@ function Landing() {
 
   return (
     <div className="flex justify-center items-center h-[100vh]">
+        
       <Button className="!bg-dark-blue !text-white px-2 py-4" onClick={handleVariant}>
         Continue to variants page
       </Button>

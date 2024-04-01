@@ -80,7 +80,8 @@ function Variant() {
       generateCombinations(optionList, 0, "");
       setShowForm(false);
       handleRemoveParentFinish(index);
-       window.location.reload();
+         generateCombinations(optionList, 0, "");
+      // window.location.reload();
   };
 
   useEffect(() => {
@@ -101,16 +102,7 @@ function Variant() {
 
 
   const [combinations, setCombinations] = useState([]);
-  function generateCombinations(data, index, combination) {
-    // if (index === data?.length ){
-    //   setCombinations((prevCombinations) =>{
-    //     console.log("prevCombinations", prevCombinations);
-    //     return [
-    //     ...prevCombinations,
-    //     combination.trim(),
-    //   ]});
-    //   return;
-    // }
+  function generateCombinations(data, index, combination) { 
      if (index === data?.length) {
        setCombinations((prevCombinations) => { 
          if (!prevCombinations.includes(combination.trim())) {
