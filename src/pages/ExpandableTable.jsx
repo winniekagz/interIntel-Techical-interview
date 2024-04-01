@@ -41,7 +41,7 @@ function ExpandableTable({ combinations }) {
   const groupedData = {};
 
   
-  combinations.forEach((item, index) => {
+  combinations?.forEach((item, index) => {
     const size = item.split(" - ")[0];
     if (!groupedData[size]) {
       groupedData[size] = [];

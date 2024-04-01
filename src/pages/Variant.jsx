@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { variantOptions } from "../data/Data";
 import {
   resetOptionDetails,
-  setManagementDetails,
+  setOptionDetails,
 } from "../features/variant/variantSlice";
 import ExpandableTable from "./ExpandableTable";
 import { addIcon, deleteIcon } from "../assets";
@@ -24,9 +24,9 @@ function Variant() {
   const [varArray, setVarArray] = useState([]);
   const [showChild, setShowChild] = useState({});
   const [showForm, setShowForm] = useState(true);
-  const { managementDetails } = useSelector((state) => state.variants);
+  const { optionDetails } = useSelector((state) => state.variants);
 
-  const [itemsArray, setItemsArray] = useState(managementDetails);
+  const [optionList, setOptionList] = useState(optionDetails);
 
   const handleAddParent = () => {
     setVariantCount((prevCount) => prevCount + 1);
@@ -62,23 +62,25 @@ function Variant() {
     });
   };
 
+
   const onFinish = async (values, index) => {
-    const existingIndex = managementDetails.findIndex((entry) => {
+    const existingIndex = optionDetails.findIndex((entry) => {
       return Object.values(entry).some((entryValue) =>
         Object.values(values).some((value) => value === entryValue)
       );
     });
 
     if (existingIndex !== -1) {
-      const updatedManagementDetails = [...managementDetails];
-      updatedManagementDetails[existingIndex] = { ...values };
-      await dispatch(setManagementDetails(updatedManagementDetails));
+      const updatedoptionDetails = [...optionDetails];
+      updatedoptionDetails[existingIndex] = { ...values };
+      await dispatch(setOptionDetails(updatedoptionDetails));
     } else {
-      await dispatch(setManagementDetails([...managementDetails, values]));
+      await dispatch(setOptionDetails([...optionDetails, values]));
     }
-    await generateCombinations(itemsArray, 0, "");
-    await setShowForm(false);
-    await handleRemoveParentFinish(index);
+      generateCombinations(optionList, 0, "");
+      setShowForm(false);
+      handleRemoveParentFinish(index);
+      window.location.reload();
   };
 
   useEffect(() => {
@@ -93,21 +95,23 @@ function Variant() {
   }, [variantCount]);
 
   useEffect(() => {
-    setItemsArray(managementDetails);
-  }, [managementDetails]);
+    setOptionList(optionDetails);
+  }, [optionDetails]);
 
-  console.log("itemsArray", itemsArray);
+
 
   const [combinations, setCombinations] = useState([]);
   function generateCombinations(data, index, combination) {
-    console.log("called")
-    if (index === data.length) {
-      setCombinations((prevCombinations) => [
+    console.log("called");
+    if (index === data?.length ){
+      setCombinations((prevCombinations) =>{
+        return [
         ...prevCombinations,
         combination.trim(),
-      ]);
+      ]});
       return;
     }
+ 
 
     const item = data[index];
     for (let key in item) {
@@ -117,21 +121,24 @@ function Variant() {
     }
   }
 
+ 
   async function resetVariants() {
     await dispatch(resetOptionDetails());
     await setCombinations([]);
   }
 
   useEffect(() => {
-    generateCombinations(itemsArray, 0, "");
-  }, [itemsArray]);
+    generateCombinations(optionList, 0, "");
+  }, [optionList]);
+
+   
 
   return (
     <div className="bg-light-blue-bg min-h-[100vh]">
       <div className="flex flex-col justify-center py-12 items-center ">
         <div className="w-3/4">
-          {itemsArray?.length > 0 &&
-            itemsArray?.map((item, index) => (
+          {optionList?.length > 0 &&
+            optionList?.map((item, index) => (
               <div
                 className="flex items-center card bg-white mt-10 p-10"
                 key={index + 1}
@@ -251,7 +258,7 @@ function Variant() {
                           },
                         ]}
                       >
-                        <div className="flex gap-x-5 items-center">
+                        <div className="flex gap-x-5 itcombinationsems-center">
                           <Input className="rounded-[4px] h-[52px] w-full border border-black" />
                           <button
                             type="button"
@@ -306,9 +313,9 @@ function Variant() {
             </Button>
           </div>
         </div>
-
+      
         <ExpandableTable combinations={combinations} />
-        {/* {itemsArray && itemsArray?.length > 0 ? (
+        {/* {optionList && optionList?.length > 0 ? (
           <ExpandableTable combinations={combinations} />
         ) : (
           <div>Options you add will be displayed here</div>
