@@ -121,7 +121,7 @@ function Variant() {
       }
     }
   }
-
+console.log("combinations", combinations);
  
   async function resetVariants() {
     await dispatch(resetOptionDetails());
@@ -143,7 +143,7 @@ function Variant() {
       <div className="flex flex-col justify-center py-12 items-center ">
         <div className="w-3/4">
           {optionList?.length > 0 &&
-            optionList?.map((item, index) => (
+            optionList?.map((item, index) => ( 
               <div
                 className="flex items-center card bg-white mt-10 p-10"
                 key={index + 1}
@@ -319,7 +319,7 @@ function Variant() {
           </div>
         </div>
       
-        {/* <ExpandableTable combinations={combinations} /> */}
+    
           {optionList && optionList?.length > 0 ? (
           <ExpandableTable combinations={combinations} />
         ) : (
