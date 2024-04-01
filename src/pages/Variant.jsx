@@ -80,7 +80,7 @@ function Variant() {
       generateCombinations(optionList, 0, "");
       setShowForm(false);
       handleRemoveParentFinish(index);
-      window.location.reload();
+       window.location.reload();
   };
 
   useEffect(() => {
@@ -102,15 +102,25 @@ function Variant() {
 
   const [combinations, setCombinations] = useState([]);
   function generateCombinations(data, index, combination) {
-    if (index === data?.length ){
-      setCombinations((prevCombinations) =>{
-        console.log("prevCombinations", prevCombinations);
-        return [
-        ...prevCombinations,
-        combination.trim(),
-      ]});
-      return;
-    }
+    // if (index === data?.length ){
+    //   setCombinations((prevCombinations) =>{
+    //     console.log("prevCombinations", prevCombinations);
+    //     return [
+    //     ...prevCombinations,
+    //     combination.trim(),
+    //   ]});
+    //   return;
+    // }
+     if (index === data?.length) {
+       setCombinations((prevCombinations) => { 
+         if (!prevCombinations.includes(combination.trim())) {
+           return [...prevCombinations, combination.trim()];
+         } else {
+           return prevCombinations;  
+         }
+       });
+       return;
+     }
  
 
     const item = data[index];
@@ -135,7 +145,6 @@ function Variant() {
     generateCombinations(optionList, 0, "");
   }, [optionList]);
 
-   
 
   return (
     <div className="bg-light-blue-bg min-h-[100vh]">
